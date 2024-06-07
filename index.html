@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Doraditos Online Store</title>
+<link rel="stylesheet" href="styles.css">
+<script>
+var users = [{username: 'admin', password: 'admin', role: 'admin'}];
+var cart = [];
+
+function validateLogin() {
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+  var user = users.find(u => u.username === username && u.password === password);
+  if (user) {
+    if (user.role === 'admin') {
+      document.getElementById('admin-panel').style.display = 'block';
+      document.getElementById('content').style.display = 'none';
+    } else {
+      document.getElementById('content').style.display = 'block';
+      document.getElementById('admin-panel').style.display = 'none';
+    }
+    document.getElementById('login-page').style.display = 'none';
+  } else {
+    alert('Usuario o contraseña incorrectos');
+  }
+  return false;
+}
+
+function registerUser() {
+  var regUsername = document.getElementById('reg-username').value;
+  var regPassword = document.getElementById('reg-password').value;
+  users.push({username: regUsername, password: regPassword, role: 'guest'});
+  alert('Usuario registrado con éxito. Ahora puede iniciar sesión.');
+  return false;
+}
+
+function removeUser(index) {
+  users.splice(index, 1);
+  renderUserList();
+}
+
+function addToCart(productName, price, quantityId) {
+  var quantity = parseInt(document.getElementById(quantityId).value) || 1;
+  var found = cart.find(p => p.name === productName);
+  if (found) {
+    found.qty += quantity;
+  } else {
+    cart.push({name: productName, price: price, qty: quantity});
+  }
+  renderCart();
+}
+
+function renderCart() {
+  var list = document.getElementById('cart-items');
+  list.innerHTML = '';
+  cart.forEach(product => {
+    list.innerHTML += `<li>${product.name} - $${product.price} x ${product.qty}</li>`;
+  });
+}
+
+function renderUserList() {
+  var list = document.getElementById('user-list');
+  list.innerHTML = '';
+  users.forEach((user, index) => {
+    if (user.role !== 'admin') {
+      list.innerHTML += `<li>${user.username} - <button onclick="removeUser(${index})">Remove</button></li>`;
+    }
+  });
+}
+
+function checkout() {
+  window.location.href = 'https://pago.clip.mx/07a9c3e9-59c1-4c28-a4aa-f4f8c56f9b59';
+}
+</script>
+</head>
+<body>
+<div id="login-page" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+  <form onsubmit="return validateLogin()">
+    <h2>Inicio de Sesión</h2>
+    <input type="text" id="username" placeholder="Usuario" required><br><br>
+    <input type="password" id="password" placeholder="Contraseña" required><br><br>
+    <input type="submit" value="Iniciar sesión">
+  </form>
+  <li><a href="admin.html">Admin Panel</a></li>
+  <form onsubmit="return registerUser()">
+    <h2>Registro de Usuario</h2>
+    <input type="text" id="reg-username" placeholder="Nuevo Usuario" required><br><br>
+    <input type="password" id="reg-password" placeholder="Nueva Contraseña" required><br><br>
+    <input type="submit" value="Registrar">
+  </form>
+</div>
+
+<div id="admin-panel" style="display: none;">
+  <h2>Panel de Administración</h2>
+  <ul id="user-list">
+    <!-- Lista de usuarios -->
+  </ul>
+  <button onclick="renderUserList()">Actualizar Lista de Usuarios</button>
+</div>
+
+<div id="content" style="display: none;">
+  <header>
+    <img src="Logo.jpg" alt="Los Doraditos Logo" id="logo">
+    <nav>
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#cart">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="menu">
+      <h2>Menu</h2>
+      <div class="product">
+        <img src="Ramenbirria.jpg" alt="Ramen Birria">
+        <h3>Ramen Birria</h3>
+        <p>$30.00</p>
+        <input type="number" id="Ramen Birria-qty" min="1" value="1">
+        <button onclick="addToCart('Ramen Birria', 30, 'Ramen Birria-qty')">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="Tacosdorados.jpg" alt="Tacos Dorados">
+        <h3>Tacos Dorados</h3>
+        <p>$30.00</p>
+        <input type="number" id="Tacos Dorados-qty" min="1" value="1">
+        <button onclick="addToCart('Tacos Dorados', 30, 'Tacos Dorados-qty')">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="Tacosbistec.jpg" alt="Tacos de Bistec">
+        <h3>Tacos de Bistec</h3>
+        <p>$30.00</p>
+        <input type="number" id="Tacos de Bistec-qty" min="1" value="1">
+        <button onclick="addToCart('Tacos de Bistec', 30, 'Tacos de Bistec-qty')">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="Tacobirria.jpg" alt="Taco de Birria">
+        <h3>Taco de Birria</h3>
+        <p>$30.00</p>
+        <input type="number" id="Taco de Birria-qty" min="1" value="1">
+        <button onclick="addToCart('Taco de Birria', 30, 'Taco de Birria-qty')">Add to Cart</button>
+      </div>
+    </section>
+    <section id="cart">
+      <h2>Cart</h2>
+      <ul id="cart-items">
+        <!-- Los ítems del carrito serán listados aquí -->
+      </ul>
+      <button onclick="checkout()">Checkout</button>
+    </section>
+  </main>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

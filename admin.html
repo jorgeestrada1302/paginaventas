@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administración - Los Doraditos Online Store</title>
+<link rel="stylesheet" href="styles.css">
+<script>
+var users = [{username: 'admin', password: 'admin', role: 'admin'}];
+
+function login() {
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+  if (username === 'admin' && password === 'admin') {
+    document.getElementById('user-management').style.display = 'block';
+    document.getElementById('login-form').style.display = 'none';
+  } else {
+    alert('Credenciales incorrectas');
+  }
+  return false;
+}
+
+function addUser() {
+  var username = prompt("Enter new user username:");
+  var password = prompt("Enter new user password:");
+  if (username && password) {
+    users.push({username: username, password: password, role: 'guest'});
+    renderUserList();
+  }
+}
+
+function removeUser(index) {
+  users.splice(index, 1);
+  renderUserList();
+}
+
+function renderUserList() {
+  var list = document.getElementById('user-list');
+  list.innerHTML = '';
+  users.forEach((user, index) => {
+    list.innerHTML += `<li>${user.username} <button onclick="removeUser(${index})">Remove</button></li>`;
+  });
+}
+</script>
+</head>
+<body>
+<div id="login-form">
+  <h2>Admin Login</h2>
+  <input type="text" id="username" placeholder="Username"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<div id="user-management" style="display:none;">
+  <button onclick="addUser()">Add User</button>
+  <ul id="user-list"></ul>
+</div>
+</body>
+</html>

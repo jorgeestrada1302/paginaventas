@@ -1,0 +1,1 @@
+estos archivos que te estoy proporcionando cambialos ahora a la interfaz del usuario todo igual solo que ahora con las imagenes que hay las vas reemplazar por estas pero de forma como si fuera una tienda en linea y agregarle precio de 30 a cada una y con la funcion de agregar al carrito y pagar 
